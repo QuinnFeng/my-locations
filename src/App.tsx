@@ -4,7 +4,7 @@ function App() {
 
   // useEffect(getClosestLocationInfo, []);
 
-  console.log(`api-key: ${import.meta.env.GOOGLE_API_KEY}`);
+  console.log(`api-key: ${import.meta.env.VITE_GOOGLE_MAP}`);
 
   return <></>;
 }
