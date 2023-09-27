@@ -1,12 +1,25 @@
+import { Autocomplete } from "@react-google-maps/api";
 import "./App.css";
-function App() {
-  // const [info, setInfo] = useState("");
+import { Component, useState } from "react";
+
+class App extends Component<any, any> {
+  state = { info: "" };
 
   // useEffect(getClosestLocationInfo, []);
-
-  console.log(`api-key: ${import.meta.env.VITE_GOOGLE_MAP}`);
-
-  return <></>;
+  render() {
+    return (
+      <>
+        <Autocomplete>
+          <input
+            type="text"
+            placeholder="enter street address or zipcode"
+            value={this.state.info}
+            onChange={(e) => this.setState({ info: e.target.value })}
+          />
+        </Autocomplete>
+      </>
+    );
+  };  
 }
 
 export default App;

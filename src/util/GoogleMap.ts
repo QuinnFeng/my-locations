@@ -1,4 +1,4 @@
-import { apiKey } from "./Constant";
+import { gmKey } from "./Constant";
 
 export function getClosestLocationInfo() {
   if (navigator.geolocation) {
@@ -6,12 +6,10 @@ export function getClosestLocationInfo() {
       (position: GeolocationPosition) => {
         fetch(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            `${position.coords.latitude},${position.coords.longitude}&key=${apiKey}&sensor=true`
+            `${position.coords.latitude},${position.coords.longitude}&key=${gmKey}&sensor=true`
         )
           .then((res) => res.json())
-          .then((data) => {
-            const l = data.results[0];
-          })
+          .then((data) => data.results[0])
           .catch((error) => showError(error));
       }
     );
