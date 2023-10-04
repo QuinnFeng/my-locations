@@ -1,5 +1,15 @@
 const gmKey = import.meta.env.VITE_GOOGLE_MAP;
 const baseUrl = "http://localhost:5173";
+import landingImage from "../assets/landingpage.jpg";
+import logo from "../assets/logo.png";
+// import
+
+//env variable
+export { gmKey, baseUrl };
+
+//images
+export const images = { landingImage, logo };
+
 export const appConstants = {
   // routes
   loginRoute: "/login",
@@ -15,8 +25,5 @@ export const appConstants = {
 
 export interface ReduxState {
   names: string[];
-  // reduxState: any,
   user: { username: string };
 }
-
-export { gmKey, baseUrl };

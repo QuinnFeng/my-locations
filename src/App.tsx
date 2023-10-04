@@ -1,6 +1,8 @@
 import { Autocomplete } from "@react-google-maps/api";
 import "./App.css";
+import "./base.css";
 import { Component, useState } from "react";
+import LandingPage from "./component/LandingPage";
 
 class App extends Component<any, any> {
   state = { info: "" };
@@ -9,6 +11,7 @@ class App extends Component<any, any> {
   render() {
     return (
       <>
+        <LandingPage />
         <Autocomplete>
           <input
             type="text"
@@ -19,7 +22,7 @@ class App extends Component<any, any> {
         </Autocomplete>
       </>
     );
-  };  
+  }
 }
 
 export default App;

@@ -5,7 +5,7 @@ import "./index.css";
 import reduxPromise from "redux-promise";
 import { applyMiddleware, createStore } from "redux";
 import { Provider } from "react-redux";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import { appConstants } from "./util/Constant.ts";
 import Main from "./component/Main.tsx";
 import { Login } from "./authorization/Login.tsx";
@@ -18,8 +18,14 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <BrowserRouter>
         <App>
           <switch>
-            <Route path={appConstants.loginRoute} component={Login} />
-            <Route path={appConstants.main} component={Main} />
+            <Route
+              path={appConstants.loginRoute}
+              Component={Login}
+            />
+            <Route
+              path={appConstants.main}
+              Component={Main}
+            />
           </switch>
         </App>
       </BrowserRouter>
