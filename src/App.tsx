@@ -1,25 +1,36 @@
 import { Autocomplete } from "@react-google-maps/api";
 import "./App.css";
 import "./base.css";
-import { Component, useState } from "react";
+import { Component, ReactChild, useState } from "react";
 import LandingPage from "./component/LandingPage";
 
-class App extends Component<any, any> {
-  state = { info: "" };
+interface AppState {
+  address: null | string;
+  lat: null | number;
+  lng: null | number;
+}
+
+class App extends Component<any, AppState> {
+  state: AppState = { address: "", lat: null, lng: null };
+
+  setAddress = (address: string) => {
+    this.setState({ address });
+  };
+  setLocationInfo = (address: string, lat: number, lng: number) => {
+    this.setState({ address, lat, lng });
+  };
 
   // useEffect(getClosestLocationInfo, []);
   render() {
+    const { address, lat, lng } = this.state;
+    const coordinates = { lat, lng };
     return (
       <>
-        <LandingPage />
-        <Autocomplete>
-          <input
-            type="text"
-            placeholder="enter street address or zipcode"
-            value={this.state.info}
-            onChange={(e) => this.setState({ info: e.target.value })}
-          />
-        </Autocomplete>
+        <LandingPage
+          address={address}
+          setAddress={this.setAddress}
+          setLocationInfo={this.setLocationInfo}
+        />
       </>
     );
   }

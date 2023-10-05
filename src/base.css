@@ -2,9 +2,9 @@ body {
   font-family: "Open Sans", sans-serif;
   font-weight: 400;
   font-size: 14px;
-  line-height: 1.6;
+  list-style: 1;
   letter-spacing: 0;
-  color: balck;
+  color: black;
   margin: 0;
   padding: 0;
 }
@@ -13,19 +13,16 @@ body {
 ::after,
 ::before {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 ul {
-  padding: 0;
-  margin: 0;
   list-style: none;
 }
 
 a {
   text-decoration: none;
-}
-p {
-  margin-top: 0;
 }
 
 h2 {

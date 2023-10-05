@@ -1,39 +1,126 @@
+:root {
+  --crimson: #d91400;
+  --tomato: #ff3009;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #root {
-  max-width: 1280px;
   margin: 0;
   padding: 0;
 }
 
 .header {
   position: relative;
-  height: 40rem;
+  height: auto;
   width: 100%;
+  display: block;
+  flex-direction: column;
 }
 
 .header-bg {
   background-image: url("../src/assets/landingpage.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
   width: 100%;
-  height: 40rem;
+  height: 100vh;
 }
 
 .brand {
   display: flex;
   position: absolute;
-  top: 1rem;
-  left: 50%;
-  right: 50%;
+  top: 0;
+  left: calc(50% - 9rem);
   align-items: center;
 }
 
 .logo {
-  font-size: 1.5rem;
-  width: 1.5rem;
+  width: 3rem;
+  font-size: 3rem;
   margin-right: 0.3125rem;
+  margin-top: 0.25rem;
   fill: url(#blue-gradient);
+}
+
+.brand-name {
+  font-size: 2.5rem;
+  font-weight: 400;
+  font-family: "Dancing Script", cursive;
+  color: white;
 }
 
 .navbar {
   display: flex;
-  margin: 1rem;
   gap: 0.625rem;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+}
+
+.access {
+  padding: 0.5rem 1rem;
+  border-radius: 1.25rem;
+  background-color: white;
+  border: 1px solid transparent;
+}
+
+.access.auth {
+  background-color: var(--tomato);
+  transition: color 0.3s;
+}
+
+.access.auth:hover {
+  background-color: var(--crimson);
+}
+
+.discover {
+  position: absolute;
+  top: 70%;
+  width: 100%;
+}
+
+.discover-inner {
+  flex-direction: column;
+}
+
+.discover-inner p {
+  font-weight: 600;
+  font-size: 1.5rem;
+  color: white;
+  margin-bottom: 0.3125rem;
+}
+
+.address-input {
+  border: 0;
+  width: 20rem;
+}
+
+.address-div {
+  display: flex;
+  height: auto;
+  gap: 0.25rem;
+  padding: 0.5rem 1rem;
+  background-color: white;
+  border-radius: 1rem;
+  border: 1px solid lightblue;
+  position: relative;
+  align-items: center;
+}
+
+.search-nearby-button {
+  position: absolute;
+  right: 0.25rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 0.75rem;
+  background-color: var(--tomato);
+}
+
+.address-div .left-arrow {
+  width: 1rem;
+  transform: rotate(180deg);
 }

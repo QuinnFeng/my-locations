@@ -1,6 +1,8 @@
 import { gmKey } from "./Constant";
 
-export function getClosestLocationInfo() {
+export function getClosestLocationInfo(
+  setLocationInfo: (address: string, lat: number, lng: number) => void
+) {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
@@ -9,7 +11,7 @@ export function getClosestLocationInfo() {
             `${position.coords.latitude},${position.coords.longitude}&key=${gmKey}&sensor=true`
         )
           .then((res) => res.json())
-          .then((data) => data.results[0])
+          .then((data) => console.log(data))
           .catch((error) => showError(error));
       }
     );
@@ -18,8 +20,7 @@ export function getClosestLocationInfo() {
   }
 }
 
-function showError(error: any) {
-  console.log(error);
+function showError(error: GeolocationPositionError) {
   switch (error.code) {
     case error.PERMISSION_DENIED:
       alert("User denied the request for Geolocation.");
@@ -29,9 +30,6 @@ function showError(error: any) {
       break;
     case error.TIMEOUT:
       alert("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      alert("An unknown error occurred.");
       break;
     default:
       alert("An unknown error occurred");
