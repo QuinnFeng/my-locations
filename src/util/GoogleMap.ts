@@ -6,12 +6,16 @@ export function getClosestLocationInfo(
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(
       (position: GeolocationPosition) => {
+        const lat = position.coords.latitude;
+        const lng = position.coords.longitude;
         fetch(
           "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            `${position.coords.latitude},${position.coords.longitude}&key=${gmKey}&sensor=true`
+            `${lat},${lng}&key=${gmKey}&sensor=true`
         )
           .then((res) => res.json())
-          .then((data) => console.log(data))
+          .then((data) =>
+            setLocationInfo(data.results[0].formatted_address, lat, lng)
+          )
           .catch((error) => showError(error));
       }
     );
@@ -19,6 +23,8 @@ export function getClosestLocationInfo(
     alert("Geolocation is not supported by this browser.");
   }
 }
+
+
 
 function showError(error: GeolocationPositionError) {
   switch (error.code) {
