@@ -2,10 +2,12 @@ const gmKey = import.meta.env.VITE_GOOGLE_MAP;
 const baseUrl = "http://localhost:5173";
 import landingImage from "../assets/landingpage.jpg";
 import logo from "../assets/logo.png";
+import express from "express";
 // import
 
 //env variable
-export { gmKey, baseUrl };
+const app = express();
+export { gmKey, baseUrl, app };
 
 //images
 export const images = { landingImage, logo };
