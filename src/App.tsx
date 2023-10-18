@@ -3,6 +3,7 @@ import "./App.css";
 import "./base.css";
 import { Component, ReactChild, useState } from "react";
 import LandingPage from "./component/LandingPage";
+import { getNearbyPlacesWithCategory, placeDetail } from "./util/GoogleMap";
 
 interface AppState {
   address: null | string;
@@ -24,6 +25,8 @@ class App extends Component<any, AppState> {
   render() {
     const { address, lat, lng } = this.state;
     const coordinates = { lat, lng };
+    //getNearbyPlacesWithCategory(-74.3, 40.5, "commercial", "shopping_mall", 15);
+    placeDetail(40.52563034843524, -74.4703722711072);
     return (
       <>
         <LandingPage

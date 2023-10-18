@@ -1,13 +1,14 @@
 const gmKey = import.meta.env.VITE_GOOGLE_MAP;
+const geoApiKey = import.meta.env.VITE_GEOAPI;
 const baseUrl = "http://localhost:5173";
+const geoAPiUrl = "https://api.geoapify.com/v2";
 import landingImage from "../assets/landingpage.jpg";
 import logo from "../assets/logo.png";
-import express from "express";
+
 // import
 
 //env variable
-const app = express();
-export { gmKey, baseUrl, app };
+export { gmKey, baseUrl, geoAPiUrl, geoApiKey };
 
 //images
 export const images = { landingImage, logo };

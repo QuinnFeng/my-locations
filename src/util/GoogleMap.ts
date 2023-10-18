@@ -1,4 +1,6 @@
-import { gmKey } from "./Constant";
+import { geoAPiUrl, geoApiKey, gmKey } from "./Constant";
+
+const mileToMeter = 1609.34;
 
 export function getClosestLocationInfo(
   setLocationInfo: (address: string, lat: number, lng: number) => void
@@ -24,8 +26,6 @@ export function getClosestLocationInfo(
   }
 }
 
-
-
 function showError(error: GeolocationPositionError) {
   switch (error.code) {
     case error.PERMISSION_DENIED:
@@ -41,3 +41,38 @@ function showError(error: GeolocationPositionError) {
       alert("An unknown error occurred");
   }
 }
+
+export function getNearbyPlacesWithCategory(
+  lat: number,
+  lng: number,
+  category: string,
+  type: string,
+  radius: number
+) {
+  fetch(
+    `${geoAPiUrl}/places?categories=${category}${
+      type ? "." + type : ""
+    }&filter=circle:${
+      lat + "," + lng + "," + Math.round(radius * mileToMeter)
+    }&bias=proximity:${lat + "," + lng}&limit=10&apiKey=${geoApiKey}`
+  )
+    .then((response) => response.json())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+}
+
+export function placeDetail(lat: number, lng: number) {
+  fetch(`${geoAPiUrl}/place-details?lat=${lat}&lon=${lng}&apiKey=${geoApiKey}`)
+    .then((response) => response.json())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
+}
+
+// export function placeDetail(lat: number, lng: number) {
+//   fetch(
+//     `https://api.geoapify.com/v2/place-details?lat=40.52563034843524&lon=-74.4703722711072&apiKey=${geoApiKey}`
+//   )
+//     .then((response) => response.json())
+//     .then((result) => console.log(result))
+//     .catch((error) => console.log("error", error));
+// }

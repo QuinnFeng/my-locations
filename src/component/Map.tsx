@@ -1,4 +1,4 @@
-import { Component, ReactNode } from "react";
+import { Component } from "react";
 
 class Map extends Component<any, any> {
   getDesignatedNearByPlacesByCategory = (
