@@ -15,7 +15,7 @@ const LandingPage = ({
   setAddress,
   setLocationInfo,
 }: LandingPageProps) => {
-  useEffect(() => getClosestLocationInfo(setLocationInfo), []);
+  // useEffect(() => getClosestLocationInfo(setLocationInfo), []);
 
   return (
     <>
@@ -31,7 +31,7 @@ const LandingPage = ({
         </nav>
         <div className="center discover">
           <div className="center discover-inner">
-            <p>Discover more places from your neighborhood</p>
+            <p className="gradient-text">Discover more places from your neighborhood</p>
             <div className="address-div">
               <GrLocation />
               <Autocomplete>

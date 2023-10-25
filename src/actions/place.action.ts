@@ -20,5 +20,5 @@ const removePlaceFromCategory = (cid: number, uid: number) => {
 };
 
 const searchNearByPlaces = (lat: number, lng: number) => {
-  return
+  return;
 };

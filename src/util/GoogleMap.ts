@@ -1,5 +1,5 @@
+import { response } from "express";
 import { geoAPiUrl, geoApiKey, gmKey } from "./Constant";
-
 const mileToMeter = 1609.34;
 
 export function getClosestLocationInfo(
@@ -42,6 +42,25 @@ function showError(error: GeolocationPositionError) {
   }
 }
 
+// export function getNearbyPlacesWithCategory(
+//   lat: number,
+//   lng: number,
+//   category: string,
+//   type: string,
+//   radius: number
+// ) {
+//   fetch(
+//     `${geoAPiUrl}/places?categories=${category}${
+//       type ? "." + type : ""
+//     }&filter=circle:${
+//       lat + "," + lng + "," + Math.round(radius * mileToMeter)
+//     }&bias=proximity:${lat + "," + lng}&limit=10&apiKey=${geoApiKey}`
+//   )
+//     .then((response) => response.json())
+//     .then((result) => console.log(result))
+//     .catch((error) => console.log("error", error));
+// }
+
 export function getNearbyPlacesWithCategory(
   lat: number,
   lng: number,
@@ -49,16 +68,54 @@ export function getNearbyPlacesWithCategory(
   type: string,
   radius: number
 ) {
-  fetch(
-    `${geoAPiUrl}/places?categories=${category}${
-      type ? "." + type : ""
-    }&filter=circle:${
-      lat + "," + lng + "," + Math.round(radius * mileToMeter)
-    }&bias=proximity:${lat + "," + lng}&limit=10&apiKey=${geoApiKey}`
-  )
-    .then((response) => response.json())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+  const center = { lat, lng };
+  let map: google.maps.Map = new google.maps.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      center: { lat, lng },
+    } as google.maps.MapOptions
+  );
+  const service = new google.maps.places.PlacesService(map);
+  service.nearbySearch(
+    { location: center, radius: radius, type: category },
+    (
+      results: google.maps.places.PlaceResult[] | null,
+      status: google.maps.places.PlacesServiceStatus
+    ) => {
+      if (status !== "OK" || !results) return;
+      return results;
+    }
+  );
+}
+
+export function initMap(): void {
+  // Create the map.
+  const pyrmont = { lat: -33.866, lng: 151.196 };
+  const map = new google.maps.Map(
+    document.getElementById("map") as HTMLElement,
+    {
+      center: pyrmont,
+      zoom: 17,
+    } as google.maps.MapOptions
+  );
+
+  // Create the places service.
+  const service = new google.maps.places.PlacesService(map);
+
+  // Perform a nearby search.
+  service.nearbySearch(
+    { location: pyrmont, radius: 500, type: "store" },
+    (
+      results: google.maps.places.PlaceResult[] | null,
+      status: google.maps.places.PlacesServiceStatus
+    ) => {
+      if (status !== "OK" || !results) {
+        console.error("Nearby search failed with status:", status);
+        return;
+      }
+      console.log("Nearby search results:", results);
+    }
+  );
 }
 
 export function placeDetail(lat: number, lng: number) {

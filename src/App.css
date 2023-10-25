@@ -79,8 +79,9 @@
 
 .discover {
   position: absolute;
-  top: 70%;
+  top: 55%;
   width: 100%;
+  /* bottom: 50%; */
 }
 
 .discover-inner {
@@ -90,7 +91,18 @@
 .discover-inner p {
   font-weight: 600;
   font-size: 1.5rem;
-  color: white;
+  background: linear-gradient(
+    45deg,
+    crimson  0%,
+    cyan 25%,
+    purple 50%,
+    green 75%,
+    #ff6b6b 100%
+  ); /* Define your gradient colors and direction */
+  background-clip: text; /* Clip the background to the text */
+  -webkit-background-clip: text; /* For compatibility with some browsers */
+  color: transparent; /* Make the text transparent */
+  display: inline-block;
   margin-bottom: 0.3125rem;
 }
 
