@@ -3,4 +3,6 @@ export interface PlaceModel {
   lat: null | number;
   lng: null | number;
   image: string;
+  name: string;
+  placeId: string;
 }

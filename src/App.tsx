@@ -4,8 +4,8 @@ import "./base.css";
 import { Component, ReactChild, useEffect, useState } from "react";
 import LandingPage from "./component/LandingPage";
 import {
+  getClosestLocationInfo,
   getNearbyPlacesWithCategory,
-  initMap,
   placeDetail,
 } from "./util/GoogleMap";
 
@@ -25,11 +25,12 @@ class App extends Component<any, AppState> {
     this.setState({ address, lat, lng });
   };
 
-  // useEffect(getClosestLocationInfo, []);
+
   render() {
     const { address, lat, lng } = this.state;
     const coordinates = { lat, lng };
-    // console.log(getNearbyPlacesWithCategory(lat!, lng!, "store", "", 500));
+
+
     return (
       <>
         <LandingPage
@@ -37,7 +38,6 @@ class App extends Component<any, AppState> {
           setAddress={this.setAddress}
           setLocationInfo={this.setLocationInfo}
         />
-        <div id="map"></div>
       </>
     );
   }

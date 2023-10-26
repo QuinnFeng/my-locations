@@ -1,29 +1,43 @@
 import { response } from "express";
 import { geoAPiUrl, geoApiKey, gmKey } from "./Constant";
+import { PlaceModel } from "../models/place.model";
 const mileToMeter = 1609.34;
 
-export function getClosestLocationInfo(
-  setLocationInfo: (address: string, lat: number, lng: number) => void
-) {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position: GeolocationPosition) => {
-        const lat = position.coords.latitude;
-        const lng = position.coords.longitude;
-        fetch(
-          "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
-            `${lat},${lng}&key=${gmKey}&sensor=true`
-        )
-          .then((res) => res.json())
-          .then((data) =>
-            setLocationInfo(data.results[0].formatted_address, lat, lng)
+export function getClosestLocationInfo(): Promise<{
+  lat: number;
+  lng: number;
+  address: string;
+}> {
+  return new Promise((resolve, reject) => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+          fetch(
+            "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+              `${lat},${lng}&key=${gmKey}&sensor=true`
           )
-          .catch((error) => showError(error));
-      }
-    );
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
+            .then((res) => res.json())
+            .then((data) => {
+              const address = data.results[0].formatted_address;
+              resolve({ lat, lng, address });
+            })
+            .catch((error) => {
+              showError(error);
+              reject(error);
+            });
+        },
+        (error) => {
+          showError(error);
+          reject(error);
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+      reject("Geolocation not supported");
+    }
+  });
 }
 
 function showError(error: GeolocationPositionError) {
@@ -42,25 +56,6 @@ function showError(error: GeolocationPositionError) {
   }
 }
 
-// export function getNearbyPlacesWithCategory(
-//   lat: number,
-//   lng: number,
-//   category: string,
-//   type: string,
-//   radius: number
-// ) {
-//   fetch(
-//     `${geoAPiUrl}/places?categories=${category}${
-//       type ? "." + type : ""
-//     }&filter=circle:${
-//       lat + "," + lng + "," + Math.round(radius * mileToMeter)
-//     }&bias=proximity:${lat + "," + lng}&limit=10&apiKey=${geoApiKey}`
-//   )
-//     .then((response) => response.json())
-//     .then((result) => console.log(result))
-//     .catch((error) => console.log("error", error));
-// }
-
 export function getNearbyPlacesWithCategory(
   lat: number,
   lng: number,
@@ -68,68 +63,21 @@ export function getNearbyPlacesWithCategory(
   type: string,
   radius: number
 ) {
-  const center = { lat, lng };
-  let map: google.maps.Map = new google.maps.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      center: { lat, lng },
-    } as google.maps.MapOptions
-  );
-  const service = new google.maps.places.PlacesService(map);
-  service.nearbySearch(
-    { location: center, radius: radius, type: category },
-    (
-      results: google.maps.places.PlaceResult[] | null,
-      status: google.maps.places.PlacesServiceStatus
-    ) => {
-      if (status !== "OK" || !results) return;
-      return results;
-    }
-  );
-}
-
-export function initMap(): void {
-  // Create the map.
-  const pyrmont = { lat: -33.866, lng: 151.196 };
-  const map = new google.maps.Map(
-    document.getElementById("map") as HTMLElement,
-    {
-      center: pyrmont,
-      zoom: 17,
-    } as google.maps.MapOptions
-  );
-
-  // Create the places service.
-  const service = new google.maps.places.PlacesService(map);
-
-  // Perform a nearby search.
-  service.nearbySearch(
-    { location: pyrmont, radius: 500, type: "store" },
-    (
-      results: google.maps.places.PlaceResult[] | null,
-      status: google.maps.places.PlacesServiceStatus
-    ) => {
-      if (status !== "OK" || !results) {
-        console.error("Nearby search failed with status:", status);
-        return;
-      }
-      console.log("Nearby search results:", results);
-    }
-  );
-}
-
-export function placeDetail(lat: number, lng: number) {
-  fetch(`${geoAPiUrl}/place-details?lat=${lat}&lon=${lng}&apiKey=${geoApiKey}`)
+  const query = `${geoAPiUrl}/places?categories=${category}${
+    type ? "." + type : ""
+  }&filter=circle:${
+    lng + "," + lat + "," + Math.round(radius * mileToMeter)
+  }&bias=proximity:${lng + "," + lat}&limit=10&apiKey=${geoApiKey}`;
+  // console.log(query);
+  fetch(query)
     .then((response) => response.json())
     .then((result) => console.log(result))
     .catch((error) => console.log("error", error));
 }
 
-// export function placeDetail(lat: number, lng: number) {
-//   fetch(
-//     `https://api.geoapify.com/v2/place-details?lat=40.52563034843524&lon=-74.4703722711072&apiKey=${geoApiKey}`
-//   )
-//     .then((response) => response.json())
-//     .then((result) => console.log(result))
-//     .catch((error) => console.log("error", error));
-// }
+export function placeDetail(lat: number, lng: number) {
+  fetch(`${geoAPiUrl}/place-details?lat=${lat}&lon=${lng}&apiKey=${geoApiKey}`)
+    .then((response) => response.json())
+    .then((result) => result)
+    .catch((error) => console.log("error", error));
+}

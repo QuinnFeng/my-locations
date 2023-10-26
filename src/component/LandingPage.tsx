@@ -3,7 +3,11 @@ import { Autocomplete } from "@react-google-maps/api";
 import { GrLocation } from "react-icons/gr";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useEffect } from "react";
-import { getClosestLocationInfo } from "../util/GoogleMap";
+import {
+  getClosestLocationInfo,
+  getNearbyPlacesWithCategory,
+} from "../util/GoogleMap";
+import { PlaceModel } from "../models/place.model";
 interface LandingPageProps {
   address: string | null;
   setAddress: (address: string) => void;
@@ -15,7 +19,18 @@ const LandingPage = ({
   setAddress,
   setLocationInfo,
 }: LandingPageProps) => {
-  // useEffect(() => getClosestLocationInfo(setLocationInfo), []);
+  useEffect(() => {
+    getClosestLocationInfo()
+      .then(({ lat, lng, address }) => {
+        setLocationInfo(address, lat, lng);
+        console.log(
+          getNearbyPlacesWithCategory(lat, lng, "commercial", "supermarket", 15)
+        );
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <>
@@ -31,7 +46,9 @@ const LandingPage = ({
         </nav>
         <div className="center discover">
           <div className="center discover-inner">
-            <p className="gradient-text">Discover more places from your neighborhood</p>
+            <p className="gradient-text">
+              Discover more places from your neighborhood
+            </p>
             <div className="address-div">
               <GrLocation />
               <Autocomplete>
